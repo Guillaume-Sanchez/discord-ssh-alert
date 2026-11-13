@@ -75,8 +75,6 @@ echo "${MSG[installing]}"
 # --- 4. Configuration Fail2ban ---
 mkdir -p /etc/fail2ban/scripts
 
-# Note : On utilise 'EOF' entre guillemets simples pour ne pas interpréter $1, $2, etc.,
-# puis on injecte les variables d'installation via sed.
 cat << 'EOF' > /etc/fail2ban/scripts/discord-ban-alert.sh
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
