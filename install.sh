@@ -39,8 +39,8 @@ if [[ "$APP_LANG" == "fr" ]]; then
     MSG[ask_webhook]="Entrez l'URL de votre Webhook Discord : "
     MSG[invalid_webhook]="❌ URL invalide. Elle doit commencer par https://discord.com/api/webhooks/"
     MSG[installing]="⚙️  Configuration de SSH et Fail2ban en cours..."
-    MSG[fail2ban]='🚨 **Fail2Ban** : Nouvelle attaque bloquée sur le serveur `$(hostname)` !\nL'\''IP `$IP` a été bannie par la règle `$JAIL`.'
-    MSG[sshd]='✅ **Accès SSH Autorisé** sur `$(hostname)`\nL'\''utilisateur `$PAM_USER` s'\''est connecté avec succès depuis l'\''IP `$PAM_RHOST`.'
+    MSG[fail2ban]='🚨 **Fail2Ban** : Nouvelle attaque bloquée sur le serveur \`$(hostname)\` !\nL'\''IP \`$IP\` a été bannie par la règle \`$JAIL\`.'
+    MSG[sshd]='✅ **Accès SSH Autorisé** sur \`$(hostname)\`\nL'\''utilisateur \`$PAM_USER\` s'\''est connecté avec succès depuis l'\''IP \`$PAM_RHOST`\.'
     MSG[done]="✅ Installation terminée ! Les notifications Discord sont actives."
 else
     MSG[check_root]="❌ This script must be run as root (sudo)."
@@ -48,8 +48,8 @@ else
     MSG[ask_webhook]="Enter your Discord Webhook URL: "
     MSG[invalid_webhook]="❌ Invalid URL. It must start with https://discord.com/api/webhooks/"
     MSG[installing]="⚙️  Configuring SSH and Fail2ban..."
-    MSG[fail2ban]='🚨 **Fail2Ban**: New attack blocked on the server `$(hostname)`!\nIP `$IP` has been banned by the `$JAIL` jail.'
-    MSG[sshd]='✅ **SSH Access Granted** on `$(hostname)`\nUser `$PAM_USER` successfully logged in from IP `$PAM_RHOST`.'
+    MSG[fail2ban]='🚨 **Fail2Ban**: New attack blocked on the server \`$(hostname)\` !\nIP \`$IP\` has been banned by the \`$JAIL\` jail.'
+    MSG[sshd]='✅ **SSH Access Granted** on \`$(hostname)\`\nUser \`$PAM_USER\` successfully logged in from IP \`$PAM_RHOST\`.'
     MSG[done]="✅ Installation complete! Discord notifications are now active."
 fi
 
@@ -165,4 +165,6 @@ if ! grep -Fxq "$PAM_LINE" /etc/pam.d/sshd; then
     echo "$PAM_LINE" >> /etc/pam.d/sshd
 fi
 
+echo "----------------------------------------------------"
 echo "${MSG[done]}"
+echo "----------------------------------------------------"
