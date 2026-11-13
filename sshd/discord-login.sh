@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# On ignore la fermeture de session pour ne pas avoir le message en double quand on quitte
+if [ "$PAM_TYPE" != "open_session" ]; then
+  exit 0
+fi
+
+WEBHOOK_URL="__WEBHOOK_URL__"
+
+JSON_PAYLOAD=$(cat <<EOF
+{
+  "__MSG_SSHD__"
+}
+EOF
+)
+
+curl -s -H "Content-Type: application/json" -X POST -d "$JSON_PAYLOAD" $WEBHOOK_URL

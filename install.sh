@@ -72,44 +72,21 @@ fi
 
 echo "${MSG[installing]}"
 
-# --- 4. Configuration Fail2ban ---
+# --- 4 Clone du repo ---
+
+git clone https://github.com/Guillaume-Sanchez/discord-ssh-alert.git
+cd discord-ssh-alert
+
+# --- 5. Configuration Fail2ban ---
 mkdir -p /etc/fail2ban/scripts
-
-cat << 'EOF' > /etc/fail2ban/scripts/discord-ban-alert.sh
-#!/usr/bin/env bash
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2026 Guillaume Sanchez
-
-WEBHOOK_URL="__WEBHOOK_URL__"
-
-IP="$1"
-JAIL="$2"
-
-JSON_PAYLOAD=$(cat <<INNER_EOF
-{
-  "content": "__MSG_FAIL2BAN__"
-}
-INNER_EOF
-)
-
-curl -s -H "Content-Type: application/json" -X POST -d "$JSON_PAYLOAD" "$WEBHOOK_URL"
-EOF
-
-# Injection sécurisée des variables (délimiteur | pour éviter les conflits avec les / de l'URL)
+mv ./fail2ban/discord-ban-alert.sh /etc/fail2ban/scripts/discord-ban-alert.sh
 sed -i "s|__WEBHOOK_URL__|${WEBHOOK_URL}|g" /etc/fail2ban/scripts/discord-ban-alert.sh
 sed -i "s|__MSG_FAIL2BAN__|${MSG[fail2ban]}|g" /etc/fail2ban/scripts/discord-ban-alert.sh
 chmod +x /etc/fail2ban/scripts/discord-ban-alert.sh
 
-cat << 'EOF' > /etc/fail2ban/action.d/discord-ban-alert.conf
-[Definition]
-actionban = /etc/fail2ban/scripts/discord-ban-alert.sh <ip> <name>
-actionstart = 
-actionstop = 
-actioncheck = 
-actionunban =
-EOF
+mv ./fail2ban/discord-ban-alert.conf /etc/fail2ban/action.d/discord-ban-alert.conf
 
-# Détection automatique du fichier de log SSH selon la distribution (Rocky/RHEL vs Debian/Ubuntu)
+mv ./fail2ban/sshd-discord-ban-alert.local /etc/fail2ban/jail.d/sshd-discord-ban-alert.local
 if [[ -f /var/log/secure ]]; then
     SSH_LOG_CONFIG="logpath = /var/log/secure"
 elif [[ -f /var/log/auth.log ]]; then
@@ -117,53 +94,27 @@ elif [[ -f /var/log/auth.log ]]; then
 else
     SSH_LOG_CONFIG="backend = systemd"
 fi
-
-cat << EOF > /etc/fail2ban/jail.d/sshd-discord-ban-alert.local
-[sshd]
-enabled = true
-port    = ssh
-filter  = sshd
-${SSH_LOG_CONFIG}
-maxretry = 3
-bantime = 3600
-
-action = %(banaction)s[name=%(__name__)s, port="%(port)s", protocol="%(protocol)s", chain="%(chain)s"]
-         discord-ban-alert
-EOF
+sed -i "s|__SSH_LOG_CONFIG__|${SSH_LOG_CONFIG}|g" /etc/fail2ban/jail.d/sshd-discord-ban-alert.local
 
 systemctl restart fail2ban
 
-# --- 5. Configuration SSH (PAM) ---
-cat << 'EOF' > /usr/local/bin/discord-login.sh
-#!/usr/bin/env bash
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2026 Guillaume Sanchez
+# --- 6. Configuration sshd ---
 
-WEBHOOK_URL="__WEBHOOK_URL__"
-
-if [ "$PAM_TYPE" != "open_session" ]; then
-  exit 0
-fi
-
-JSON_PAYLOAD=$(cat <<INNER_EOF
-{
-  "content": "__MSG_SSHD__"
-}
-INNER_EOF
-)
-
-curl -s -H "Content-Type: application/json" -X POST -d "$JSON_PAYLOAD" "$WEBHOOK_URL"
-EOF
-
+mv ./sshd/discord-login.sh /usr/local/bin/discord-login.sh
 sed -i "s|__WEBHOOK_URL__|${WEBHOOK_URL}|g" /usr/local/bin/discord-login.sh
 sed -i "s|__MSG_SSHD__|${MSG[sshd]}|g" /usr/local/bin/discord-login.sh
 chmod +x /usr/local/bin/discord-login.sh
 
-# Ajout dans PAM uniquement si la ligne n'existe pas déjà
 PAM_LINE="session optional pam_exec.so /usr/local/bin/discord-login.sh"
 if ! grep -Fxq "$PAM_LINE" /etc/pam.d/sshd; then
     echo "$PAM_LINE" >> /etc/pam.d/sshd
 fi
+
+# --- 7. Nettoyage repo git ---
+
+cd ../
+rm -Rf discord-ssh-alert
+
 
 echo "----------------------------------------------------"
 echo "${MSG[done]}"

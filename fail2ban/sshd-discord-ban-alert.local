@@ -1,0 +1,10 @@
+[sshd]
+enabled = true
+port    = ssh
+filter  = sshd
+${SSH_LOG_CONFIG}
+maxretry = 3
+bantime = 3600
+
+action = %(banaction)s[name=%(__name__)s, port="%(port)s", protocol="%(protocol)s", chain="%(chain)s"]
+         discord-ban-alert
