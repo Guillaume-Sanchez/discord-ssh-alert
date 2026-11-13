@@ -1,2 +1,33 @@
-# discord-ssh-alert
-Lightweight bash installer that sets up real-time Discord webhook alerts for SSH logins and Fail2ban IP bans on Linux servers.
+# Discord Ssh Alert
+
+[![English](https://img.shields.io/badge/lang-English-blue.svg)](README.md)
+[![Français](https://img.shields.io/badge/lang-Français-red.svg)](README.fr.md)
+
+A lightweight, automated installation tool that deploys two monitoring scripts on a Linux server to receive real-time **Discord** notifications via Webhook.
+
+## Features
+
+* **SSH Login Alert:** Sends an instant notification whenever a user opens an SSH session on the server (username, source IP address, timestamp, and hostname).
+* **Fail2ban Ban Alert:** Automatically notifies when an IP address is banned by a Fail2ban jail (blocked IP, triggered service/jail).
+* **Fast Deployment:** Single installation script that configures system hooks and Fail2ban actions without complex manual setup.
+
+## Prerequisites
+
+* A Linux server (Debian, Ubuntu, Rocky Linux, etc.)
+* `openssh-server` installed and running
+* `fail2ban` installed and running
+* `curl` (to send HTTP requests to the Discord API)
+* A **Discord Webhook** URL
+
+## Installation
+
+```bash
+git clone [https://github.com/Guillaume-Sanchez/discord-ssh-alert.git](https://github.com/Guillaume-Sanchez/discord-ssh-alert.git)
+cd discord-ssh-alert
+chmod +x install.sh
+sudo ./install.sh
+```
+
+## Licence
+
+This project is licensed under the MIT License. See the LICENSE file for details.
