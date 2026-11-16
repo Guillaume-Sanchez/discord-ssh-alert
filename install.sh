@@ -142,6 +142,10 @@ if ! grep -Fxq "$PAM_LINE" /etc/pam.d/sshd; then
     echo "$PAM_LINE" >> /etc/pam.d/sshd
 fi
 
+if command -v restorecon &> /dev/null; then
+    restorecon -Rv /usr/local/bin/discord-login.sh /etc/fail2ban/scripts/
+fi
+
 # --- 7. Nettoyage repo git ---
 
 cd ../

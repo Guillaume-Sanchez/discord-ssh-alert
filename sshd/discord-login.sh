@@ -1,6 +1,7 @@
 #!/bin/bash
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Guillaume Sanchez
 
-# On ignore la fermeture de session pour ne pas avoir le message en double quand on quitte
 if [ "$PAM_TYPE" != "open_session" ]; then
   exit 0
 fi

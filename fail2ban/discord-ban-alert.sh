@@ -1,12 +1,12 @@
 #!/bin/bash
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Guillaume Sanchez
 
-# Remplacez par l'URL de votre Webhook
 WEBHOOK_URL="__WEBHOOK_URL__"
 
 IP=$1
 JAIL=$2
 
-# Formatage du message envoyé sur Discord
 JSON_PAYLOAD=$(cat <<EOF
 {
   "content": "🚨 **Fail2Ban**: New attack blocked on the server \`$(hostname)\` !\nIP \`$IP\` has been banned by the \`$JAIL\` jail."
