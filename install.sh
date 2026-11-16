@@ -39,8 +39,6 @@ if [[ "$APP_LANG" == "fr" ]]; then
     MSG[ask_webhook]="Entrez l'URL de votre Webhook Discord : "
     MSG[invalid_webhook]="❌ URL invalide. Elle doit commencer par https://discord.com/api/webhooks/"
     MSG[installing]="⚙️  Configuration de SSH et Fail2ban en cours..."
-    MSG[fail2ban]='🚨 **Fail2Ban** : Nouvelle attaque bloquée sur le serveur \`$(hostname)\` !\nL'\''IP \`$IP\` a été bannie par la règle \`$JAIL\`.'
-    MSG[sshd]='✅ **Accès SSH Autorisé** sur \`$(hostname)\`\nL'\''utilisateur \`$PAM_USER\` s'\''est connecté avec succès depuis l'\''IP \`$PAM_RHOST`\.'
     MSG[done]="✅ Installation terminée ! Les notifications Discord sont actives."
 else
     MSG[check_root]="❌ This script must be run as root (sudo)."
@@ -48,8 +46,6 @@ else
     MSG[ask_webhook]="Enter your Discord Webhook URL: "
     MSG[invalid_webhook]="❌ Invalid URL. It must start with https://discord.com/api/webhooks/"
     MSG[installing]="⚙️  Configuring SSH and Fail2ban..."
-    MSG[fail2ban]='🚨 **Fail2Ban**: New attack blocked on the server \`$(hostname)\` !\nIP \`$IP\` has been banned by the \`$JAIL\` jail.'
-    MSG[sshd]='✅ **SSH Access Granted** on \`$(hostname)\`\nUser \`$PAM_USER\` successfully logged in from IP \`$PAM_RHOST\`.'
     MSG[done]="✅ Installation complete! Discord notifications are now active."
 fi
 
@@ -79,9 +75,13 @@ cd discord-ssh-alert
 
 # --- 5. Configuration Fail2ban ---
 mkdir -p /etc/fail2ban/scripts
-mv ./fail2ban/discord-ban-alert.sh /etc/fail2ban/scripts/discord-ban-alert.sh
+
+if [[ "$APP_LANG" == "fr" ]]; then
+    mv ./fail2ban/discord-ban-alert-fr.sh /etc/fail2ban/scripts/discord-ban-alert.sh
+else
+    mv ./fail2ban/discord-ban-alert.sh /etc/fail2ban/scripts/discord-ban-alert.sh
+fi
 sed -i "s|__WEBHOOK_URL__|${WEBHOOK_URL}|g" /etc/fail2ban/scripts/discord-ban-alert.sh
-sed -i "s|__MSG_FAIL2BAN__|${MSG[fail2ban]}|g" /etc/fail2ban/scripts/discord-ban-alert.sh
 chmod +x /etc/fail2ban/scripts/discord-ban-alert.sh
 
 mv ./fail2ban/discord-ban-alert.conf /etc/fail2ban/action.d/discord-ban-alert.conf
@@ -100,9 +100,12 @@ systemctl restart fail2ban
 
 # --- 6. Configuration sshd ---
 
-mv ./sshd/discord-login.sh /usr/local/bin/discord-login.sh
+if [[ "$APP_LANG" == "fr" ]]; then
+    mv ./sshd/discord-login-fr.sh /usr/local/bin/discord-login.sh
+else
+    mv ./sshd/discord-login.sh /usr/local/bin/discord-login.sh
+fi
 sed -i "s|__WEBHOOK_URL__|${WEBHOOK_URL}|g" /usr/local/bin/discord-login.sh
-sed -i "s|__MSG_SSHD__|${MSG[sshd]}|g" /usr/local/bin/discord-login.sh
 chmod +x /usr/local/bin/discord-login.sh
 
 PAM_LINE="session optional pam_exec.so /usr/local/bin/discord-login.sh"

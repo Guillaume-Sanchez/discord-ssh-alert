@@ -9,7 +9,7 @@ WEBHOOK_URL="__WEBHOOK_URL__"
 
 JSON_PAYLOAD=$(cat <<EOF
 {
-  "__MSG_SSHD__"
+  "✅ **SSH Access Granted** on \`$(hostname)\`\nUser \`$PAM_USER\` successfully logged in from IP \`$PAM_RHOST\`."
 }
 EOF
 )

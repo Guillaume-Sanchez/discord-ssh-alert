@@ -9,7 +9,7 @@ JAIL=$2
 # Formatage du message envoyé sur Discord
 JSON_PAYLOAD=$(cat <<EOF
 {
-  "content": "__MSG_FAIL2BAN__"
+  "content": "🚨 **Fail2Ban**: New attack blocked on the server \`$(hostname)\` !\nIP \`$IP\` has been banned by the \`$JAIL\` jail."
 }
 EOF
 )
