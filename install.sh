@@ -36,6 +36,10 @@ declare -A MSG
 if [[ "$APP_LANG" == "fr" ]]; then
     MSG[check_root]="❌ Ce script doit être exécuté avec les privilèges root (sudo)."
     MSG[welcome]="🛡️  Installation des alertes Discord pour SSH et Fail2ban"
+    MSG[checking_deps]="🔍 Vérification des prérequis (sshd, fail2ban, curl)..."
+    MSG[missing_deps]="❌ Prérequis manquants :"
+    MSG[install_hint]="Veuillez les installer avant de relancer ce script (ex: apt install openssh-server fail2ban curl ou dnf install openssh-server fail2ban curl)."
+    MSG[deps_ok]="✅ Tous les prérequis sont présents."
     MSG[ask_webhook]="Entrez l'URL de votre Webhook Discord : "
     MSG[invalid_webhook]="❌ URL invalide. Elle doit commencer par https://discord.com/api/webhooks/"
     MSG[installing]="⚙️  Configuration de SSH et Fail2ban en cours..."
@@ -43,6 +47,10 @@ if [[ "$APP_LANG" == "fr" ]]; then
 else
     MSG[check_root]="❌ This script must be run as root (sudo)."
     MSG[welcome]="🛡️  Installing Discord alerts for SSH and Fail2ban"
+    MSG[checking_deps]="🔍 Checking prerequisites (sshd, fail2ban, curl)..."
+    MSG[missing_deps]="❌ Missing prerequisites:"
+    MSG[install_hint]="Please install them before running this script again (e.g., apt install openssh-server fail2ban curl or dnf install openssh-server fail2ban curl)."
+    MSG[deps_ok]="✅ All prerequisites are installed."
     MSG[ask_webhook]="Enter your Discord Webhook URL: "
     MSG[invalid_webhook]="❌ Invalid URL. It must start with https://discord.com/api/webhooks/"
     MSG[installing]="⚙️  Configuring SSH and Fail2ban..."
@@ -58,6 +66,27 @@ fi
 echo "----------------------------------------------------"
 echo "${MSG[welcome]}"
 echo "----------------------------------------------------"
+
+echo "${MSG[checking_deps]}"
+MISSING_DEPS=()
+
+if ! command -v sshd &> /dev/null; then
+    MISSING_DEPS+=("openssh-server (sshd)")
+fi
+
+if ! command -v fail2ban-client &> /dev/null; then
+    MISSING_DEPS+=("fail2ban")
+fi
+
+if ! command -v curl &> /dev/null; then
+    MISSING_DEPS+=("curl")
+fi
+
+if [[ ${#MISSING_DEPS[@]} -gt 0 ]]; then
+    echo "${MSG[missing_deps]} ${MISSING_DEPS[*]}"
+    echo "${MSG[install_hint]}"
+    exit 1
+fi
 
 read -rp "${MSG[ask_webhook]}" WEBHOOK_URL < /dev/tty
 
