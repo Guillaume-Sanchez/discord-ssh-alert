@@ -1,4 +1,4 @@
-# Discord Ssh Alert
+# 🛡️ SSH & Fail2ban Discord Alerts
 
 [![English](https://img.shields.io/badge/lang-English-blue.svg)](README.md)
 [![Français](https://img.shields.io/badge/lang-Français-red.svg)](README.fr.md)
@@ -10,6 +10,10 @@ A lightweight, automated installation tool that deploys two monitoring scripts o
 * **SSH Login Alert:** Sends an instant notification whenever a user opens an SSH session on the server (username, source IP address, timestamp, and hostname).
 * **Fail2ban Ban Alert:** Automatically notifies when an IP address is banned by a Fail2ban jail (blocked IP, triggered service/jail).
 * **Fast Deployment:** Single installation script that configures system hooks and Fail2ban actions without complex manual setup.
+
+## Preview
+
+
 
 ## Prerequisites
 
@@ -31,7 +35,7 @@ A lightweight, automated installation tool that deploys two monitoring scripts o
 ### Run the installation script
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/Guillaume-Sanchez/discord-ssh-alert/refs/heads/main/install.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/Guillaume-Sanchez/ssh-fail2ban-discord-alerts/refs/heads/main/install.sh | sudo bash
 ```
 
 ## Licence

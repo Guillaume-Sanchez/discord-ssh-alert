@@ -2,7 +2,7 @@
 enabled = true
 port    = ssh
 filter  = sshd
-${SSH_LOG_CONFIG}
+__SSH_LOG_CONFIG__
 maxretry = 3
 bantime = 3600
 
