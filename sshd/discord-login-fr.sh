@@ -9,7 +9,7 @@ WEBHOOK_URL="__WEBHOOK_URL__"
 
 JSON_PAYLOAD=$(cat <<EOF
 {
-  "content": "✅ **Accès SSH Autorisé** sur \`$(hostname)\`\nL'\''utilisateur \`$PAM_USER\` s'\''est connecté avec succès depuis l'\''IP \`$PAM_RHOST\`."
+  "content": "✅ **Accès SSH Autorisé** sur \`$(hostname)\`\nL'utilisateur \`$PAM_USER\` s'est connecté avec succès depuis l'IP \`$PAM_RHOST\`.""
 }
 EOF
 )
