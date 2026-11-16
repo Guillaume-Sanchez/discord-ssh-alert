@@ -13,7 +13,7 @@ A lightweight, automated installation tool that deploys two monitoring scripts o
 
 ## Preview
 
-
+![preview.png](./preview.png)
 
 ## Prerequisites
 

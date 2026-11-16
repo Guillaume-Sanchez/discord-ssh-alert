@@ -13,7 +13,7 @@ Un outil d'installation léger et automatisé permettant de déployer rapidement
 
 ## Prévisualisation
 
-
+![preview.png](./preview.png)
 
 ## Prérequis
 
