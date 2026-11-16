@@ -21,6 +21,15 @@ A lightweight, automated installation tool that deploys two monitoring scripts o
 
 ## Installation
 
+### Get your Discord Webhook
+
+* Go to your Discord server.
+* Click on the server name → Server Settings → Integrations → Webhooks.
+* Create a new webhook or use an existing one.
+* Copy the webhook URL and paste it when prompted by the script (`$WEBHOOK_URL`).
+
+### Run the installation script
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/Guillaume-Sanchez/discord-ssh-alert/refs/heads/main/install.sh | sudo bash
 ```

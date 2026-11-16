@@ -21,6 +21,15 @@ Un outil d'installation léger et automatisé permettant de déployer rapidement
 
 ## Installation
 
+### Récupérer le Webhook Discord
+
+* Allez dans votre serveur Discord.
+* Cliquez sur le nom du serveur → Paramètres du serveur → Intégrations → Webhooks.
+* Créez un nouveau webhook ou utilisez un existant.
+* Copiez l'URL du webhook et collez-la dans (`$WEBHOOK_URL`) du script.
+
+### Lancer le script d'installation
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/Guillaume-Sanchez/discord-ssh-alert/refs/heads/main/install.sh | sudo bash
 ```
