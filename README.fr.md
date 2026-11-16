@@ -22,10 +22,7 @@ Un outil d'installation léger et automatisé permettant de déployer rapidement
 ## Installation
 
 ```bash
-git clone [https://github.com/Guillaume-Sanchez/discord-ssh-alert.git](https://github.com/Guillaume-Sanchez/discord-ssh-alert.git)
-cd discord-ssh-alert
-chmod +x install.sh
-sudo ./install.sh
+curl -sSL https://raw.githubusercontent.com/Guillaume-Sanchez/discord-ssh-alert/refs/heads/main/install.sh | sudo bash
 ```
 
 ## License
